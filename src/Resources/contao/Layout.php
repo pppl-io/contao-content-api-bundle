@@ -16,7 +16,7 @@ class ApiLayout extends AugmentedContaoModel
      */
     public function __construct($id)
     {
-        $this->model = LayoutModel::findByPk($id);
+        $this->model = LayoutModel::findById($id);
     }
 
     public static function list()
