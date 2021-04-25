@@ -1,5 +1,5 @@
 {
-  "name": "dieschittigs/contao-content-api-bundle",
+  "name": "pppl/contao-content-api-bundle",
   "description": "Access Contao content via an easy to use JSON-API",
   "type": "contao-bundle",
   "keywords": [

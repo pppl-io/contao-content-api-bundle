@@ -1,6 +1,10 @@
-# Contao Content API
+# Fork of Contao Content API
 
-We at [Die Schittigs](http://www.dieschittigs.de) love
+This is a fork.
+It contains some changes to make the nuxt-contao bridge work.
+## Original
+
+Original: [Die Schittigs](http://www.dieschittigs.de) love
 [Contao](https://contao.org/de/), but the web moves
 forward and static HTML templating just doesn't cut it anymore. Thus we came up
 with an easily digestible JSON-API to access Contao content via JavaScript
