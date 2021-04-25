@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use DieSchittigs\ContaoContentApiBundle\File;
 use DieSchittigs\ContaoContentApiBundle\ApiModule;
+use DieSchittigs\ContaoContentApiBundle\ApiLayout;
 use DieSchittigs\ContaoContentApiBundle\ContentApiResponse;
 use DieSchittigs\ContaoContentApiBundle\Sitemap;
 use DieSchittigs\ContaoContentApiBundle\SitemapFlat;
@@ -198,6 +199,31 @@ class ContentApiController extends Controller
         return new ContentApiResponse(new ApiModule($request->query->get('id', 0)), 200, $this->headers);
     }
 
+    /**
+     * @return Response
+     *
+     * @Route("/layout", name="content_api_layout")
+     *
+     * @param Request $request Current request
+     */
+    public function layoutAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(new ApiLayout($request->query->get('id', 0)), 200, $this->headers);
+    }
+    
+    /**
+     * @return Response
+     *
+     * @Route("/layouts", name="content_api_layouts")
+     *
+     * @param Request $request Current request
+     */
+    public function layoutsAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(ApiLayout::list(), 200, $this->headers);
+    }
     /**
      * @return Response
      *
