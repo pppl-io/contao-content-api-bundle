@@ -18,6 +18,10 @@
   "license": "MIT",
   "authors": [
     {
+      "name": "Florian Over",
+      "email": "florian.over@pppl.io"
+    },
+    {
       "name": "Tobias Duehr",
       "email": "tobias@dieschittigs.de"
     }
