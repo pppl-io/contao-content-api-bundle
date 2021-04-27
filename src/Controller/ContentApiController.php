@@ -184,7 +184,9 @@ class ContentApiController extends Controller
         $request = $this->init($request);
 
         return new ContentApiResponse(
-            File::get($request->query->get('path', 'files'), $request->query->get('depth', 0)), 200, $this->headers
+            File::get($request->query->get('path', 'files'), $request->query->get('depth', 0)),
+            200,
+            $this->headers
         );
     }
 
@@ -214,7 +216,7 @@ class ContentApiController extends Controller
         $request = $this->init($request);
         return new ContentApiResponse(new ApiLayout($request->query->get('id', 0)), 200, $this->headers);
     }
-    
+
     /**
      * @return Response
      *
@@ -225,7 +227,7 @@ class ContentApiController extends Controller
     public function layoutsAction(Request $request)
     {
         $request = $this->init($request);
-        return new ContentApiResponse(ApiLayout::list(), 200, $this->headers);
+        return new ContentApiResponse(ApiLayout::listAction($request->query->get('pid', 0)), 200, $this->headers);
     }
 
     /**
@@ -240,7 +242,7 @@ class ContentApiController extends Controller
         $request = $this->init($request);
         return new ContentApiResponse(new ApiTheme($request->query->get('id', 0)), 200, $this->headers);
     }
-    
+
     /**
      * @return Response
      *
@@ -251,10 +253,10 @@ class ContentApiController extends Controller
     public function themesAction(Request $request)
     {
         $request = $this->init($request);
-        return new ContentApiResponse(ApiTheme::list(), 200, $this->headers);
+        return new ContentApiResponse(ApiTheme::listAction(), 200, $this->headers);
     }
 
-     /**
+    /**
      * @return Response
      *
      * @Route("/stylesheet", name="content_api_stylesheet")
@@ -266,7 +268,7 @@ class ContentApiController extends Controller
         $request = $this->init($request);
         return new ContentApiResponse(new ApiStyleSheet($request->query->get('id', 0)), 200, $this->headers);
     }
-    
+
     /**
      * @return Response
      *
@@ -277,10 +279,10 @@ class ContentApiController extends Controller
     public function styleSheetsAction(Request $request)
     {
         $request = $this->init($request);
-        return new ContentApiResponse(ApiStyleSheet::list(), 200, $this->headers);
+        return new ContentApiResponse(ApiStyleSheet::listAction($request->query->get('pid', 0)), 200, $this->headers);
     }
 
-         /**
+    /**
      * @return Response
      *
      * @Route("/style", name="content_api_style")
@@ -292,7 +294,7 @@ class ContentApiController extends Controller
         $request = $this->init($request);
         return new ContentApiResponse(new ApiStyle($request->query->get('id', 0)), 200, $this->headers);
     }
-    
+
     /**
      * @return Response
      *
@@ -303,7 +305,7 @@ class ContentApiController extends Controller
     public function stylesAction(Request $request)
     {
         $request = $this->init($request);
-        return new ContentApiResponse(ApiStyle::list(), 200, $this->headers);
+        return new ContentApiResponse(ApiStyle::listAction($request->query->get('pid', 0)), 200, $this->headers);
     }
 
     /**
@@ -334,7 +336,7 @@ class ContentApiController extends Controller
         $request = $this->init($request);
         $readers = $this->getParameter('content_api_readers');
         if (!$readers[$reader]) {
-            return new ContentApiResponse('Reader "'.$reader.'" not available'.$url, 404);
+            return new ContentApiResponse('Reader "' . $reader . '" not available' . $url, 404);
         }
         $url = $request->query->get('url', '/');
         $page = Page::findByUrl($url, false);
@@ -343,7 +345,7 @@ class ContentApiController extends Controller
             $readerArticle = (new Reader($readers[$reader], $url))->toJson();
         }
         if (!$readerArticle) {
-            return new ContentApiResponse('No reader found at URL '.$url, 404);
+            return new ContentApiResponse('No reader found at URL ' . $url, 404);
         }
 
         return new ContentApiResponse($readerArticle, 200, $this->headers);
@@ -382,7 +384,7 @@ class ContentApiController extends Controller
             }
         }
         if (!$readerFound && !$exactMatch) {
-            return new ContentApiResponse('No page and reader found at URL '.$url, 404);
+            return new ContentApiResponse('No page and reader found at URL ' . $url, 404);
         }
 
         return new ContentApiResponse($response, 200, $this->headers);

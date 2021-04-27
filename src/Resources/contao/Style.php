@@ -12,19 +12,28 @@ class ApiStyle extends AugmentedContaoModel
     /**
      * constructor.
      *
-     * @param int $id id of the ModuleModel
+     * @param int $id id of the StyleModel
      */
     public function __construct($id)
     {
         $this->model = StyleModel::findById($id);
     }
 
-    public static function list()
+    public static function list($pid)
     {
         $styles = [];
-        foreach(StyleModel::findAll() as $style) {
+
+        $dbStyles = $pid > 0 ? StyleModel::findByPid($pid) : StyleModel::findAll();
+
+        foreach ($dbStyles as $style) {
             $styles[] = new self($style->id);
         }
-        return new ContaoJson($styles);
+
+        return $styles;
+    }
+
+    public static function listAction($pid)
+    {
+        return new ContaoJson(self::list($pid));
     }
 }

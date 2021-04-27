@@ -2,6 +2,9 @@
 
 namespace DieSchittigs\ContaoContentApiBundle;
 
+use DieSchittigs\ContaoContentApiBundle\ApiStyleSheet;
+use DieSchittigs\ContaoContentApiBundle\ApiLayout;
+
 use Contao\ThemeModel;
 
 /**
@@ -12,19 +15,28 @@ class ApiTheme extends AugmentedContaoModel
     /**
      * constructor.
      *
-     * @param int $id id of the ModuleModel
+     * @param int $id id of the ThemeModel
      */
     public function __construct($id)
     {
         $this->model = ThemeModel::findById($id);
+        $this->layouts = ApiLayout::list($id);
+        $this->stylesheets = ApiStyleSheet::list($id);
     }
 
     public static function list()
     {
         $themes = [];
-        foreach(ThemeModel::findAll() as $theme) {
+
+        foreach (ThemeModel::findAll() as $theme) {
             $themes[] = new self($theme->id);
         }
-        return new ContaoJson($themes);
+
+        return $themes;
+    }
+
+    public static function listAction()
+    {
+        return new ContaoJson(self::list());
     }
 }
