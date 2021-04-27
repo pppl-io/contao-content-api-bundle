@@ -9,6 +9,8 @@ use DieSchittigs\ContaoContentApiBundle\File;
 use DieSchittigs\ContaoContentApiBundle\ApiModule;
 use DieSchittigs\ContaoContentApiBundle\ApiLayout;
 use DieSchittigs\ContaoContentApiBundle\ApiTheme;
+use DieSchittigs\ContaoContentApiBundle\ApiStyle;
+use DieSchittigs\ContaoContentApiBundle\ApiStyleSheet;
 use DieSchittigs\ContaoContentApiBundle\ContentApiResponse;
 use DieSchittigs\ContaoContentApiBundle\Sitemap;
 use DieSchittigs\ContaoContentApiBundle\SitemapFlat;
@@ -226,7 +228,6 @@ class ContentApiController extends Controller
         return new ContentApiResponse(ApiLayout::list(), 200, $this->headers);
     }
 
-
     /**
      * @return Response
      *
@@ -251,6 +252,58 @@ class ContentApiController extends Controller
     {
         $request = $this->init($request);
         return new ContentApiResponse(ApiTheme::list(), 200, $this->headers);
+    }
+
+     /**
+     * @return Response
+     *
+     * @Route("/stylesheet", name="content_api_stylesheet")
+     *
+     * @param Request $request Current request
+     */
+    public function styleSheetAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(new ApiStyleSheet($request->query->get('id', 0)), 200, $this->headers);
+    }
+    
+    /**
+     * @return Response
+     *
+     * @Route("/stylesheets", name="content_api_stylesheets")
+     *
+     * @param Request $request Current request
+     */
+    public function styleSheetsAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(ApiStyleSheet::list(), 200, $this->headers);
+    }
+
+         /**
+     * @return Response
+     *
+     * @Route("/style", name="content_api_style")
+     *
+     * @param Request $request Current request
+     */
+    public function styleAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(new ApiStyle($request->query->get('id', 0)), 200, $this->headers);
+    }
+    
+    /**
+     * @return Response
+     *
+     * @Route("/styles", name="content_api_styles")
+     *
+     * @param Request $request Current request
+     */
+    public function stylesAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(ApiStyle::list(), 200, $this->headers);
     }
 
     /**

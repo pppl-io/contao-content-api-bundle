@@ -5,7 +5,7 @@ namespace DieSchittigs\ContaoContentApiBundle;
 use Contao\ThemeModel;
 
 /**
- * ApiLayout augments LayoutModel for the API.
+ * ApiTheme augments ThemeModel for the API.
  */
 class ApiTheme extends AugmentedContaoModel
 {
