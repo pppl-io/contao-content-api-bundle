@@ -4,8 +4,9 @@ namespace DieSchittigs\ContaoContentApiBundle;
 
 use DieSchittigs\ContaoContentApiBundle\ApiStyle;
 
+use Contao\StyleModel;
 use Contao\StyleSheetModel;
-
+use Contao\StyleSheets;
 /**
  * ApiStyleSheet augments StyleSheetModel for the API.
  */
@@ -18,8 +19,22 @@ class ApiStyleSheet extends AugmentedContaoModel
      */
     public function __construct($id)
     {
-        $this->model = StyleSheetModel::findById($id);
+        $stylesheet = StyleSheetModel::findById($id);
+
+        $this->model = $stylesheet;
+
         $this->styles = ApiStyle::list($id);
+
+
+        //Dirty :(
+        $compiledCss = "";
+        $cStyles = new StyleSheets();
+        $styles = StyleModel::findByPid($id);
+        foreach($styles as $style) {
+            
+            $compiledCss .= $cStyles->compileDefinition($style->row(), false, $this->vars, $stylesheet->row(), true);
+        }
+        $this->compiledCss = $compiledCss;
     }
 
 
