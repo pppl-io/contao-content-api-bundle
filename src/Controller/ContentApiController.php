@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use DieSchittigs\ContaoContentApiBundle\File;
 use DieSchittigs\ContaoContentApiBundle\ApiModule;
+use DieSchittigs\ContaoContentApiBundle\ApiSearchResult;
 use DieSchittigs\ContaoContentApiBundle\ApiLayout;
 use DieSchittigs\ContaoContentApiBundle\ApiTheme;
 use DieSchittigs\ContaoContentApiBundle\ApiStyle;
@@ -202,6 +203,26 @@ class ContentApiController extends Controller
         $request = $this->init($request);
 
         return new ContentApiResponse(new ApiModule($request->query->get('id', 0)), 200, $this->headers);
+    }
+
+    /**
+     * @return Response
+     *
+     * @Route("/search", name="content_api_search")
+     *
+     * @param Request $request Current request
+     */
+    public function searchAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(new ApiSearchResult(
+            $request->query->get('keywords', ""),
+            $request->query->get('query_type', "and"),
+            $request->query->get('root', null),
+            $request->query->get('per_page', 20),
+            $request->query->get('page', 1),
+            $request->query->get('fuzzy', true)
+        ), 200, $this->headers);
     }
 
     /**
