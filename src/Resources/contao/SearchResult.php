@@ -45,10 +45,24 @@ class ApiSearchResult extends AugmentedContaoModel
         $this->executeSearch($strKeywords, $root);
     }
 
+    private function getPages($pid) {
+        $arrReturn = [];
+        $pages = PageModel::findPublishedByPid($pid);
+        foreach($pages as $page) {
+            $arrReturn[] = $page->id;
+            $arrReturn = array_merge($arrReturn, $this->getPages($page->id));
+        }
+        return $arrReturn;
+    }
+
     private function executeSearch($strKeywords, $root)
     {
         $pages = [];
         $arrResult = null;
+
+        if ($strKeywords === '' || $strKeywords === '*') {
+            return;
+        }
 
         if (!$root) {
             $roots = PageModel::findPublishedRootPages(['order' => 'sorting ASC']);
@@ -56,9 +70,10 @@ class ApiSearchResult extends AugmentedContaoModel
         }
 
         $root = intval($root);
+        $this->root = $root;
 
-        $pages = PageModel::findPublishedByPid($root, ['order' => 'sorting ASC']);
-
+        $pages = $this->getPages($root);
+        //die(json_encode($pages));
 
         if (empty($pages) || !\is_array($pages)) {
             return [];
