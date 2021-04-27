@@ -2,12 +2,12 @@
 
 namespace DieSchittigs\ContaoContentApiBundle;
 
-use Contao\LayoutModel;
+use Contao\ThemeModel;
 
 /**
  * ApiLayout augments LayoutModel for the API.
  */
-class ApiLayout extends AugmentedContaoModel
+class ApiTheme extends AugmentedContaoModel
 {
     /**
      * constructor.
@@ -16,15 +16,15 @@ class ApiLayout extends AugmentedContaoModel
      */
     public function __construct($id)
     {
-        $this->model = LayoutModel::findById($id);
+        $this->model = ThemeModel::findById($id);
     }
 
     public static function list()
     {
-        $layouts = [];
-        foreach(LayoutModel::findAll() as $layout) {
-            $layouts[] = new self($layout->id);
+        $themes = [];
+        foreach(ThemeModel::findAll() as $theme) {
+            $themes[] = new self($theme->id);
         }
-        return new ContaoJson($layouts);
+        return new ContaoJson($themes);
     }
 }

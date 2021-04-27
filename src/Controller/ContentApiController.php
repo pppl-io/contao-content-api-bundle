@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use DieSchittigs\ContaoContentApiBundle\File;
 use DieSchittigs\ContaoContentApiBundle\ApiModule;
 use DieSchittigs\ContaoContentApiBundle\ApiLayout;
+use DieSchittigs\ContaoContentApiBundle\ApiTheme;
 use DieSchittigs\ContaoContentApiBundle\ContentApiResponse;
 use DieSchittigs\ContaoContentApiBundle\Sitemap;
 use DieSchittigs\ContaoContentApiBundle\SitemapFlat;
@@ -224,6 +225,34 @@ class ContentApiController extends Controller
         $request = $this->init($request);
         return new ContentApiResponse(ApiLayout::list(), 200, $this->headers);
     }
+
+
+    /**
+     * @return Response
+     *
+     * @Route("/theme", name="content_api_theme")
+     *
+     * @param Request $request Current request
+     */
+    public function themeAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(new ApiTheme($request->query->get('id', 0)), 200, $this->headers);
+    }
+    
+    /**
+     * @return Response
+     *
+     * @Route("/themes", name="content_api_themes")
+     *
+     * @param Request $request Current request
+     */
+    public function themesAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(ApiTheme::list(), 200, $this->headers);
+    }
+
     /**
      * @return Response
      *
