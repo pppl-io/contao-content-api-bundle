@@ -22,17 +22,14 @@ class ApiModule extends AugmentedContaoModel
         try {
             $strColumn = null;
             // Add compatibility to new front end module fragments
-            if(defined('VERSION'))
-            {
-                if (version_compare(VERSION, '4.5', '>='))
-                {
-                    if ($moduleClass === ModuleProxy::class)
-                    {
+            if (defined('VERSION')) {
+                if (version_compare(VERSION, '4.5', '>=')) {
+                    if ($moduleClass === ModuleProxy::class) {
                         $strColumn = 'main';
                     }
                 }
             }
-            $module = new $moduleClass($this->model, $strColumn);            
+            $module = new $moduleClass($this->model, $strColumn);
             $this->compiledHTML = @$module->generate() ?? null;
         } catch (\Exception $e) {
             $this->compiledHTML = null;
@@ -42,5 +39,23 @@ class ApiModule extends AugmentedContaoModel
                 $callback[0]::{$callback[1]}($this, $moduleClass);
             }
         }
+    }
+
+    public static function list($pid)
+    {
+        $modules = [];
+
+        $dbModules = $pid > 0 ? ModuleModel::findByPid($pid) : ModuleModel::findAll();
+
+        foreach ($dbModules as $module) {
+            $modules[] = new self($module->id);
+        }
+
+        return $modules;
+    }
+
+    public static function listAction($pid)
+    {
+        return new ContaoJson(self::list($pid));
     }
 }

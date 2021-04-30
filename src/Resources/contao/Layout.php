@@ -25,22 +25,11 @@ class ApiLayout extends AugmentedContaoModel
                 return $module["enable"] === "1";
             });
             $groupedModules = new \stdClass();
-            foreach ($modules as $mod => $module) {
-
+            foreach ($modules as $module) {
                 if (!isset($groupedModules->{$module["col"]})) {
                     $groupedModules->{$module["col"]} = [];
                 }
-
-                if ($module["mod"] === "0") {
-                    $groupedModules->{$module["col"]}[] = $module;
-                    continue;
-                }
-
-                $dirtyModule = new ApiModule($module["mod"]);
-
-                $dirtyModule->layoutPosition = $module["col"];
-
-                $groupedModules->{$module["col"]}[] = $dirtyModule;
+                $groupedModules->{$module["col"]}[] = $module;
             }
             $this->modules = $groupedModules;
         }

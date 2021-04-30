@@ -4,6 +4,7 @@ namespace DieSchittigs\ContaoContentApiBundle;
 
 use DieSchittigs\ContaoContentApiBundle\ApiStyleSheet;
 use DieSchittigs\ContaoContentApiBundle\ApiLayout;
+use DieSchittigs\ContaoContentApiBundle\ApiModule;
 use DieSchittigs\ContaoContentApiBundle\File;
 
 use Contao\ThemeModel;
@@ -23,6 +24,7 @@ class ApiTheme extends AugmentedContaoModel
         $this->model = ThemeModel::findById($id);
         $this->layouts = ApiLayout::list($id);
         $this->stylesheets = ApiStyleSheet::list($id);
+        $this->modules = ApiModule::list($id);
 
         if ($this->folders) {
             $folders = unserialize($this->folders);
