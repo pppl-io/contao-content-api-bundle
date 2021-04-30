@@ -22,7 +22,7 @@ class ApiLayout extends AugmentedContaoModel
 
         if (is_array($modules)) {
             $modules = array_filter($modules, function ($module) {
-                return $module["enable"] === 1;
+                return $module["enable"] === "1";
             });
             $groupedModules = new \stdClass();
             foreach ($modules as $mod => $module) {
