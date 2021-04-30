@@ -21,14 +21,28 @@ class ApiLayout extends AugmentedContaoModel
         $modules = unserialize($this->modules);
 
         if (is_array($modules)) {
-
+            $modules = array_filter($modules, function ($module) {
+                return $module["enable"] === 1;
+            });
+            $groupedModules = new \stdClass();
             foreach ($modules as $mod => $module) {
+
+                if (!isset($groupedModules->{$module["col"]})) {
+                    $groupedModules->{$module["col"]} = [];
+                }
+
                 if ($module["mod"] === "0") {
+                    $groupedModules->{$module["col"]}[] = $module;
                     continue;
                 }
-                $modules[$mod] = new ApiModule($module["mod"]);
+
+                $dirtyModule = new ApiModule($module["mod"]);
+
+                $dirtyModule->layoutPosition = $module["col"];
+
+                $groupedModules->{$module["col"]}[] = $dirtyModule;
             }
-            $this->modules = $modules;
+            $this->modules = $groupedModules;
         }
     }
 
