@@ -10,6 +10,8 @@ use DieSchittigs\ContaoContentApiBundle\ApiModule;
 use DieSchittigs\ContaoContentApiBundle\ApiSearchResult;
 use DieSchittigs\ContaoContentApiBundle\ApiLayout;
 use DieSchittigs\ContaoContentApiBundle\ApiTheme;
+use DieSchittigs\ContaoContentApiBundle\ApiNewsArchive;
+use DieSchittigs\ContaoContentApiBundle\ApiNews;
 use DieSchittigs\ContaoContentApiBundle\ApiStyle;
 use DieSchittigs\ContaoContentApiBundle\ApiStyleSheet;
 use DieSchittigs\ContaoContentApiBundle\ContentApiResponse;
@@ -223,6 +225,58 @@ class ContentApiController extends Controller
             $request->query->get('page', 1),
             $request->query->get('fuzzy', true)
         ), 200, $this->headers);
+    }
+
+    /**
+     * @return Response
+     *
+     * @Route("/newsarchives", name="content_api_newssarchives")
+     *
+     * @param Request $request Current request
+     */
+    public function newsarchivesAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(ApiNewsArchive::listAction($request->query->get('pid', null)), 200, $this->headers);
+    }
+
+    /**
+     * @return Response
+     *
+     * @Route("/newsarchive", name="content_api_newssarchive")
+     *
+     * @param Request $request Current request
+     */
+    public function newsarchiveAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(new ApiNewsArchive($request->query->get('id', null)), 200, $this->headers);
+    }
+
+    /**
+     * @return Response
+     *
+     * @Route("/news", name="content_api_news")
+     *
+     * @param Request $request Current request
+     */
+    public function newsAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(ApiNews::listAction($request->query->get('pid', null)), 200, $this->headers);
+    }
+
+    /**
+     * @return Response
+     *
+     * @Route("/new", name="content_api_new")
+     *
+     * @param Request $request Current request
+     */
+    public function newAction(Request $request)
+    {
+        $request = $this->init($request);
+        return new ContentApiResponse(new ApiNews($request->query->get('id', null)), 200, $this->headers);
     }
 
     /**
