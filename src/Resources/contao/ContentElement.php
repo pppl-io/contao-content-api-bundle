@@ -53,7 +53,13 @@ class ApiContentElement extends AugmentedContaoModel
                     $iconBoxes[$i]['image'] = (new File($box['image'], null))->toJson();
                 }
             }
-            $this->iconBoxes = $iconBoxes;
+            $this->iconBoxes = array_map(function ($item) {
+                return [
+                    'title' => $item['title'],
+                    'text' => $item['text'],
+                    'image' => $item['image'],
+                ];
+            }, $iconBoxes);
         }
     }
 
